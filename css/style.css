@@ -6,7 +6,7 @@
 
 :root {
     --watermelon: #FF3B3F;
-    --sky: #CAEBF2;
+    --sky: #bde5ee;
     --carbon: #A9A9A9;
     --neutral: #EFEFEF;
 }
@@ -39,7 +39,7 @@ a {
 }
 
 .navbar .logo img {
-    width: 75px;
+    width: 50px;
     height: auto;
 }
 
@@ -66,7 +66,8 @@ a {
 /* Hero */
 
 .hero .container {
-    height: 350px;
+    margin: 20px 0 0;
+    height: 250px;
 }
 
 .hero .hero-content {
@@ -74,6 +75,31 @@ a {
 }
 
 
+/* Explore */
+
+.explore .container {
+    height: 350px;
+    margin: auto;
+    width: 80%;
+    border-top-style: solid;
+    border-color: var(--carbon);
+    border-width: 2px;
+}
+
+.explore .explore-heading {
+    text-align: center;
+}
+
+.explore .explore-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.explore .explore-card {
+    border-radius: 10px;
+    padding: 10px;
+}
 
 /* Text Classes */
 
@@ -81,37 +107,42 @@ a {
     font-size: 3rem;
     line-height: 1.2;
     font-weight: 600;
-    margin: 40px 0 20px;
 }
 
 .text-xl {
     font-size: 2.2rem;
     line-height: 1.4;
     font-weight: normal;
-    margin: 40px 0 20px;
 }
 
 .text-lg {
     font-size: 1.8rem;
     line-height: 1.4;
     font-weight: normal;
-    margin: 30px 0 20px;
 }
 
 .text-md {
     font-size: 1.2rem;
     line-height: 1.4;
     font-weight: normal;
-    margin: 20px 0 10px;
 }
 
 .text-sm {
     font-size: 0.9rem;
     line-height: 1.4;
     font-weight: normal;
-    margin: 10px 0 5px;
 }
 
 .text-center {
     text-align: center;
+}
+
+/* Backgroud */
+
+.bg-watermelon {
+    background: var(--watermelon);
+}
+
+.bg-sky {
+    background: var(--sky);
 }
