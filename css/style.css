@@ -25,6 +25,26 @@ a {
     color: #000;
 }
 
+/* Scroll Bar */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+  
+  
+::-webkit-scrollbar-track {
+    background: var(--neutral);
+}
+
+
+::-webkit-scrollbar-thumb {
+    background: var(--carbon);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
 /* Navbar */
 
 .navbar {
@@ -78,12 +98,12 @@ a {
 /* Explore */
 
 .explore .container {
-    height: 350px;
     margin: auto;
     width: 80%;
     border-top-style: solid;
     border-color: var(--carbon);
     border-width: 2px;
+    padding: 20px;
 }
 
 .explore .explore-heading {
@@ -97,9 +117,49 @@ a {
 }
 
 .explore .explore-card {
-    border-radius: 10px;
+    height: 300px;
+    border-radius: 5px;
     padding: 10px;
+    overflow-y: auto;
 }
+
+.explore .explore-heading {
+    margin-bottom: 20px;
+}
+
+.explore .explore-element {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 20px;
+    
+}
+
+.explore .explore-element ul {
+    display: flex;
+}
+
+.explore .explore-element ul li {
+    margin-right: 20px;
+}
+
+.explore .explore-element a {
+    padding: 5px;
+    transition: 0.5s;
+}
+
+.explore .explore-element .bracket-name:hover {
+    color: var(--watermelon);
+}
+
+.explore .explore-element .league-name:hover {
+    color: var(--sky);
+}
+
+
 
 /* Text Classes */
 
@@ -145,4 +205,8 @@ a {
 
 .bg-sky {
     background: var(--sky);
+}
+
+.bg-neutral {
+    background: var(--neutral);
 }
