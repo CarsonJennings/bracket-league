@@ -34,3 +34,17 @@ app.post("/user", (request, response) => {
         });
     });
 });
+
+app.get("/users", (request, response) => {
+    const sql = `SELECT * FROM users`;
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            response.status(400).json({ error: err.message });
+            return;
+        }
+        response.json({
+            "status" : "Success",
+            "data": rows, 
+        });
+    });
+});
