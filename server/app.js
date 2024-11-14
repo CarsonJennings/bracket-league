@@ -1,4 +1,5 @@
 const express = require('express');
+const db = require('./database/database');
 
 const app = express();
 app.use(express.json());
@@ -10,7 +11,7 @@ app.listen(PORT, () => {
 
 app.get("/status", (request, response) => {
     const status = {
-        "Status" : "Running"
+        "Status" : "Running",
     };
 
     response.send(status);
