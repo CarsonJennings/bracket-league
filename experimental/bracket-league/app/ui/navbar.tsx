@@ -28,7 +28,7 @@ export default function NavBar() {
                         </Link>
                     </li>
                     <li>
-                        <Link href="/" className='px-4 py-4 hover:text-red-500 duration-150 text-base font-semibold'>
+                        <Link href="/create" className='px-4 py-4 hover:text-red-500 duration-150 text-base font-semibold'>
                             Create
                         </Link>
                     </li>
