@@ -2,6 +2,7 @@
 
 import { sql } from '@vercel/postgres';
 import { z } from 'zod';
+import bcrypt from 'bcrypt';
 
 const UserSchema = z.object({
     firstName: z.string().max(30, {message: 'Name must be less than 30 characters'}),
@@ -39,6 +40,24 @@ export async function createUser(prevState: State, formData: FormData) {
         return {
             errors: validatedUser.error.flatten().fieldErrors,
             message: 'Failed to create user.',
+        };
+    }
+
+    const { firstName, lastName, email, password } = validatedUser.data;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+
+    try {
+        await sql`
+            INSERT INTO users (first_name, last_name, email, password)
+            VALUES (${firstName}, ${lastName}, ${email}, ${hashedPassword})
+        `;
+    } catch (error) {
+        return {
+            errors: {
+                email: ["An account under this email may already exist"],
+            },
+            message: "Failed to create new user",
         };
     }
 
