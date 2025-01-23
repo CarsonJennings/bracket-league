@@ -53,6 +53,7 @@ export async function createUser(prevState: State, formData: FormData) {
             VALUES (${firstName}, ${lastName}, ${email}, ${hashedPassword})
         `;
     } catch (error) {
+        console.error(error);
         return {
             errors: {
                 email: ["An account under this email may already exist"],
