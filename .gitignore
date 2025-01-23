@@ -42,3 +42,6 @@ next-env.d.ts
 
 # vscode
 .vscode
+
+# database setup
+/app/db
