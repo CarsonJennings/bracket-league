@@ -1,6 +1,7 @@
 import { Poppins } from "next/font/google";
 import NavBar from "@/app/ui/navbar";
 import "./globals.css";
+import { Analytics } from '@vercel/analytics/next';
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -21,6 +22,7 @@ export default function RootLayout({
         <NavBar />
         {children}
         {/* If there is any footer put it here */}
+        <Analytics />
       </body>
     </html>
   );
