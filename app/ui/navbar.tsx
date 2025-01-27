@@ -19,17 +19,17 @@ export default function NavBar() {
                         </Link>
                     </li>
                     <li>
-                        <Link href="/brackets" className='px-4 py-4 text-white hover:text-red-100 duration-150 text-base font-semibold'>
+                        <Link href="/dashboard/brackets" className='px-4 py-4 text-white hover:text-red-100 duration-150 text-base font-semibold'>
                             Your Brackets
                         </Link>
                     </li>
                     <li>
-                        <Link href="/leagues" className='px-4 py-4 text-white hover:text-red-100 duration-150 text-base font-semibold'>
+                        <Link href="/dashboard/leagues" className='px-4 py-4 text-white hover:text-red-100 duration-150 text-base font-semibold'>
                             Your Leagues
                         </Link>
                     </li>
                     <li>
-                        <Link href="/create" className='px-4 py-4 text-white hover:text-red-100 duration-150 text-base font-semibold'>
+                        <Link href="/dashboard/create" className='px-4 py-4 text-white hover:text-red-100 duration-150 text-base font-semibold'>
                             Create
                         </Link>
                     </li>
