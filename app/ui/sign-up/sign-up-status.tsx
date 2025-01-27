@@ -1,6 +1,6 @@
-import { State } from '@/app/lib/actions';
+import { SignUpState } from '@/app/lib/definitions';
 
-export default function SignUpStatus({ signUpState }: {signUpState: State}) {
+export default function SignUpStatus({ signUpState }: {signUpState: SignUpState}) {
     // Check if there were any errors
     if (Object.keys(signUpState.errors).length === 0) {
         if (signUpState.message) {
