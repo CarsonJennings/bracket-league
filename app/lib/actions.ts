@@ -1,7 +1,6 @@
 'use server'
 
 import { sql } from '@vercel/postgres';
-import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { SignUpState, SignUpSchema } from '@/app/lib/definitions';
 
