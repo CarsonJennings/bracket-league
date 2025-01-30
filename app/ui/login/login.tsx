@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { login } from "@/app/lib/auth";
 import { LoginState } from '@/app/lib/definitions';
+import LoginStatus from "@/app/ui/login/login-status";
 
 const initialState: LoginState = {
     errors: {},
@@ -28,6 +29,7 @@ export default function Login() {
                 Log in
             </button>
 
+            <LoginStatus loginState={state}/>
         </form>
     );
 }

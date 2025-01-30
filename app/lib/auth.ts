@@ -36,7 +36,14 @@ export async function login(state: LoginState, formData: FormData) {
 
     // attempt to get user from db and ensure correct credentials.
     const rawUser = await getUser(email);
-    
+    if (!rawUser) {
+        return {
+            errors: {
+                email: ['Invalid email'],
+            },
+            message: 'Login failed',
+        };
+    }
     const result = await bcrypt.compare(password, rawUser.password);
 
     if (!result) {
