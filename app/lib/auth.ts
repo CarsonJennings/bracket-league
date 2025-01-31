@@ -67,5 +67,6 @@ export async function login(state: LoginState, formData: FormData) {
 
 export async function logout() {
   // Destroy the session
-  deleteSession();
+  await deleteSession();
+  redirect('/');
 }
