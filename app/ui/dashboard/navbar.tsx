@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import ProfileLink from '@/app/ui/profile-link';
+import ProfileLink from '@/app/ui/dashboard/profile-link';
 import { getSession } from "@/app/lib/sessions";
 import { User } from "@/app/lib/definitions"
 
@@ -15,7 +15,7 @@ export default async function NavBar() {
         <nav className="flex p-4 items-center bg-gradient-to-r from-red-400 to-blue-400">
             <ul className='flex items-center w-full'>
                     <li className='mr-16'>
-                        <Link href='/'>
+                        <Link href='/dashboard'>
                             <Image
                             className='rounded-xl'
                             src="/bracket-league.png"

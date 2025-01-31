@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { User } from '@/app/lib/definitions';
 
 
-const secretKey = process.env.SESSION_SECRET; // TODO: Make this an environment variable
+const secretKey = process.env.SESSION_SECRET;
 const key = new TextEncoder().encode(secretKey);
 
 export async function encrypt(payload: any) {

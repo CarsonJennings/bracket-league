@@ -1,7 +1,7 @@
 'use client'
 
 import { User } from "@/app/lib/definitions"
-import Dropdown from "@/app/ui/dropdown";
+import Dropdown from "@/app/ui/dashboard/dropdown";
 import { useState } from "react";
 
 export default function ProfileLink({user}: {user: User | undefined}) {

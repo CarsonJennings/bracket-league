@@ -1,5 +1,4 @@
 import { Poppins } from "next/font/google";
-import NavBar from "@/app/ui/navbar";
 import "./globals.css";
 import { Analytics } from '@vercel/analytics/next';
 
@@ -19,7 +18,6 @@ export default function RootLayout({
       <body
         className={`${poppins.className} antialiased`}
       >
-        <NavBar />
         {children}
         {/* If there is any footer put it here */}
         <Analytics />
