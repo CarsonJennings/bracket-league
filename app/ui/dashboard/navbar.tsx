@@ -10,7 +10,7 @@ export default async function NavBar() {
     if (!session) {
         return;
     }
-    const user: User = session.user;
+    const user = session.user;
     return (
         <nav className="flex p-4 items-center bg-gradient-to-r from-red-400 to-blue-400">
             <ul className='flex items-center w-full'>
@@ -41,7 +41,7 @@ export default async function NavBar() {
                         </Link>
                     </li>
                     <li className='ml-auto'>
-                        <ProfileLink user={user}/>
+                        <ProfileLink user={(user as User)}/>
                     </li>
                 </ul>
         </nav>

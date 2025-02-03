@@ -1,10 +1,8 @@
 'use client'
 
 import { logout } from "@/app/lib/auth";
-import { useActionState } from "react";
 
 export default function Dropdown({isVisible}: {isVisible: boolean}) {
-    const [state, formAction] = useActionState(logout, null);
     
     return (
     <div>
@@ -17,7 +15,7 @@ export default function Dropdown({isVisible}: {isVisible: boolean}) {
                 Settings
             </li>
             <li className="block">
-                <form action={formAction}>
+                <form action={logout}>
                     <button type="submit">
                         Logout
                     </button>

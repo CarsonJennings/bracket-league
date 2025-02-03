@@ -1,4 +1,4 @@
-import { string, z } from 'zod';
+import { z } from 'zod';
 
 export const SignUpSchema = z.object({
     firstName: z.string().max(30, {message: 'Name must be less than 30 characters'}),

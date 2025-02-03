@@ -4,13 +4,13 @@ import { User } from "@/app/lib/definitions"
 import Dropdown from "@/app/ui/dashboard/dropdown";
 import { useState } from "react";
 
-export default function ProfileLink({user}: {user: User | undefined}) {
+export default function ProfileLink({user}: {user: User}) {
+    
+    const [isVisible, setIsvisible] = useState(false);
+    
     if (!user) {
         return;
     }
-
-    const [isVisible, setIsvisible] = useState(false);
-
 
     const toggleIsVisible = () => {
         setIsvisible(!isVisible);
