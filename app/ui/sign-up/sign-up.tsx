@@ -1,10 +1,11 @@
 'use client'
 
-import { createUser, State } from '@/app/lib/actions';
+import { SignUpState } from '@/app/lib/definitions'
+import { createUser } from '@/app/lib/actions';
 import SignUpStatus from '@/app/ui/sign-up/sign-up-status';
 import { useActionState } from 'react';
 
-const initialState: State = {
+const initialState: SignUpState = {
     errors: {},
     message: null,
 };
