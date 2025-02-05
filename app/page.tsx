@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Steps from "@/app/ui/steps";
 
 export default function Home() {
   return (
@@ -12,7 +13,10 @@ export default function Home() {
         </h2>
       </section>
 
-      {/* TODO: When have the app built out a bit more can add a carousel or something showing examples of the app in use */}
+      <section className="w-10/12">
+        <Steps />
+      </section>
+
 
       <section>
         <h3 className="text-3xl mt-16 mb-12 text-center">
