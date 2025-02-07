@@ -1,5 +1,6 @@
 import Link from "next/link"
 import Steps from "@/app/ui/steps";
+import WhyBracketLeague from "@/app/ui/why-bracket-league";
 
 export default function Home() {
   return (
@@ -13,10 +14,25 @@ export default function Home() {
         </h2>
       </section>
 
+      <div className="border-b-[1px] border-gray-300 w-3/4 my-10"></div>
+
       <section className="w-10/12">
         <Steps />
       </section>
 
+      <div className="border-b-[1px] border-gray-300 w-3/4 my-10"></div>
+
+      <section className="w-10/12">
+        <div>
+          <h2 className="text-3xl font-semibold text-center mb-10">
+            Why Bracket League?
+          </h2>
+
+          <WhyBracketLeague />
+        </div>
+      </section>
+
+      <div className="border-b-[1px] border-gray-300 w-3/4 my-10"></div>
 
       <section>
         <h3 className="text-3xl mt-16 mb-12 text-center">
@@ -30,8 +46,8 @@ export default function Home() {
             Sign up
           </Link>
         </div>
-
       </section>
+      
 
     </main>
   );
