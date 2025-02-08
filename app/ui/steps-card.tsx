@@ -13,7 +13,7 @@ export default function StepsCard({header, text, borderColor = ""}: {header: str
     }
 
     return (
-        <div className={`bg-gray-200 p-5 rounded-xl flex-1 text-center border-4 border-${borderColor}-500`}>
+        <div className={borderColor === "red" ? "bg-gray-200 p-5 rounded-xl flex-1 text-center border-4 border-red-500" : "bg-gray-200 p-5 rounded-xl flex-1 text-center border-4 border-blue-500"}>
             <h2 className="font-bold text-2xl mb-4">
                 {header}
             </h2>
