@@ -29,7 +29,7 @@ export default function WhyBracketLeague() {
 
 
                 <h3 className="text-md">
-                    Completely customizable and can be used for any sport
+                    Fully customizable and can be used for any sport
                 </h3>
             </div>
 

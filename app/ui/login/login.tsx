@@ -20,10 +20,10 @@ export default function Login() {
             </h3>
 
             <label className="block py-[10px]" htmlFor="email">Email</label>
-            <input className="block p-[5px]" type="text" placeholder="Email" id="email" name="email" required/>
+            <input className="block p-[5px] max-w-full" type="text" placeholder="Email" id="email" name="email" autoComplete="on" required/>
 
             <label className="block py-[10px]" htmlFor="password">Password</label>
-            <input className="block p-[5px]" type="password" placeholder="Password" id="password" name="password" required/>
+            <input className="block p-[5px] max-w-full" type="password" placeholder="Password" id="password" name="password" autoComplete="off" required/>
 
             <button type="submit" className="cursor-pointer p-[10px] mt-10 bg-blue-500 hover:bg-blue-600 rounded-md text-center text-white">
                 Log in
