@@ -34,10 +34,6 @@ export async function getLeague(name: string) {
 
 export async function createLeague(user_id: bigint, name: string, description: string, startDate: Date, endDate: Date) {
     // Do some error handling
-    if (!name || !description || !startDate || !endDate) {
-        console.error('Error failed to create league. One or more of the function parameters are undefined');
-        return;
-    }
     if (name.length > 255) {
         console.error('Error length of name must be less than or equal to 255 character');
         return;
@@ -80,10 +76,6 @@ export async function createLeague(user_id: bigint, name: string, description: s
 
 export async function createBracket(user_id: bigint, name: string, description: string, startDate: Date, endDate: Date) {
     // Do some error handling
-    if (!name || !description || !startDate || !endDate) {
-        console.error('Error failed to create bracket. One or more of the function parameters are undefined');
-        return;
-    }
     if (name.length > 255) {
         console.error('Error length of name must be less than or equal to 255 character');
         return;
