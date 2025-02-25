@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { CreateState } from "@/app/lib/definitions";
 import { createBracketLeague } from '@/app/lib/actions';
+import CreateFormStatus from "@/app/ui/dashboard/create/create-form-status";
 
 const initialState: CreateState = {
     errors: {},
@@ -39,6 +40,7 @@ export default function CreateForm() {
                 Create
             </button>
 
+            <CreateFormStatus state={state} />
 
         </form>
     );
