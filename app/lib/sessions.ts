@@ -37,6 +37,21 @@ export async function getSession() {
   return await decrypt(session);
 }
 
+export async function getUserSession() {
+  const curSession = await getSession();
+
+  if (!curSession) {
+    return null;
+  }
+
+  const user = curSession.user;
+  if (!user) {
+    return null;
+  }
+  
+  return user as User;
+}
+
 export async function updateSession(request: NextRequest) {
   const session = request.cookies.get("session")?.value;
   if (!session) return;
