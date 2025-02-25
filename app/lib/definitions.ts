@@ -37,6 +37,8 @@ export const LoginSchema = z.object({
 
 export type CreateState = {
     errors: {
+        league?: string,
+        bracket?: string,
         name?: string;
         description?: string;
         start_date?: string;

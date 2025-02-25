@@ -1,5 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { getUserSession } from '@/app/lib/sessions';
+import { CreateState } from '@/app/lib/definitions';
 
 // Returns true if date2 is ahead of date1 by a year. With precision down to the day
 function isAheadAYear(date1: Date, date2: Date) {
@@ -33,29 +34,45 @@ export async function getLeague(name: string) {
     return rows[0];
 }
 
-export async function createLeague(name: string, description: string, startDate: Date, endDate: Date) {
+export async function createLeague(name: string, description: string, startDate: Date, endDate: Date): Promise<CreateState> {
     // Do some error handling
     if (name.length > 255) {
         console.error('Error length of name must be less than or equal to 255 character');
-        return;
+        return {
+            errors: {
+                name: "Name length exceeds 255 character max",
+            },
+            message: "Failed to create new league",
+        };
     }
 
     if (startDate > endDate) {
         console.error('Error end date must come after start date');
-        return;
+        return {
+            errors: {
+                start_date: "Start date after end date",
+                end_date: "End date after start date",
+            },
+            message: "Failed to create new league",
+        };
     }
 
     if (isAheadAYear(startDate, endDate)) {
         console.error('Error end date must be less than or equal to one year ahead of start date');
-        return;
+        return {
+            errors: {
+                end_date: "End date cannot be over a year ahead of the start date",
+            },
+            message: "Failed to create new league",
+        };
 
     }
 
     const user = await getUserSession();
     if (!user) {
         return {
-            errors: { league: "unable to create league" },
-            message: "Creation failed"
+            errors: { league: "Unauthorized create attempt" },
+            message: "Failed to create a new league"
         };
     }
 
@@ -77,36 +94,73 @@ export async function createLeague(name: string, description: string, startDate:
             VALUES (${userId.toString()}, (SELECT league_id FROM leagues WHERE name=${name}), 'super_admin')
         `;
         await sql`COMMIT`;
+        return {
+            errors: {},
+            message: "Success",
+        };
 
     } catch (error) {
         await sql`ROLLBACK`;
         console.error('unexpected error while attempting to create a new league: ', error);
+        
+        if (error instanceof Error) {
+            if (error.message.includes('duplicate key value violates unique constraint "leagues_name_key"')) {
+                return {
+                    errors: {
+                        name: "A league under that name already exists",
+                    },
+                    message: "Failed to create a new league",
+                }
+            }
+        }
+        return {
+            errors: {
+                league: "Unexepected error occured",
+            },
+            message: "Failed to create a new league",
+        };
     }
 
 } 
 
-export async function createBracket(name: string, description: string, startDate: Date, endDate: Date) {
+export async function createBracket(name: string, description: string, startDate: Date, endDate: Date): Promise<CreateState> {
     // Do some error handling
     if (name.length > 255) {
         console.error('Error length of name must be less than or equal to 255 character');
-        return;
+        return {
+            errors: {
+                name: "Name length exceeds 255 character max",
+            },
+            message: "Failed to create new bracket",
+        };
     }
 
     if (startDate > endDate) {
         console.error('Error end date must come after start date');
-        return;
+        return {
+            errors: {
+                start_date: "Start date after end date",
+                end_date: "End date after start date",
+            },
+            message: "Failed to create new bracket",
+        };
     }
     
     if (isAheadAYear(startDate, endDate)) {
         console.error('Error end date must be less than or equal to one year ahead of start date');
-        return;
+        return {
+            errors: {
+                end_date: "End date cannot be over a year ahead of the start date",
+            },
+            message: "Failed to create new bracket",
+        };
     }
 
     const user = await getUserSession();
     if (!user) {
         return {
-            errors: { bracket: "unable to create bracket" },
-            message: "Creation failed"
+            errors: { bracket: "Unauthorized create attempt" },
+            message: "Failed to create a new bracket"
         };
     }
 
@@ -129,10 +183,32 @@ export async function createBracket(name: string, description: string, startDate
             VALUES (${userId.toString()}, (SELECT bracket_id FROM brackets WHERE name=${name}), 'super_admin')
         `;
         await sql`COMMIT`;
+        return {
+            errors: {},
+            message: "Success",
+        };
 
     } catch (error) {
         await sql`ROLLBACK`;
         console.error('unexpected error while attempting to create a new bracket: ', error);
+
+        if (error instanceof Error) {
+            if (error.message.includes('duplicate key value violates unique constraint "brackets_name_key"')) {
+                return {
+                    errors: {
+                        name: "A bracket under that name already exists",
+                    },
+                    message: "Failed to create a new bracket",
+                }
+            }
+        }
+
+        return {
+            errors: {
+                bracket: "Unexepected error occured",
+            },
+            message: "Failed to create a new bracket",
+        };
     }
 
 }

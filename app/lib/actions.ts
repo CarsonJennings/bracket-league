@@ -59,30 +59,29 @@ export async function createBracketLeague(state: CreateState, formData: FormData
     const rawEndDate = formData.get("end-date");
     
     // Just for testing. return something more useful later
-    const my_state: CreateState = {
-        errors: {},
-        message: null,
+    const error_state: CreateState = {
+        errors: {
+            league: "Missing fields",
+            bracket: "Missing fields",
+        },
+        message: "Error missing fields",
     };
 
     if (!name || !description) {
-        return my_state;
+        return error_state;
     }
 
     if (!rawStartDate || !rawEndDate) {
-        return my_state;
+        return error_state;
     }
 
     const startDate = new Date(rawStartDate.toString());
     const endDate = new Date(rawEndDate.toString());
 
 
-    console.log(createType, name, description, startDate, endDate);
     if (createType === "league") {
-        await createLeague(name.toString(), description.toString(), startDate, endDate);
+        return await createLeague(name.toString(), description.toString(), startDate, endDate);
     } else  {
-        await createBracket(name.toString(), description.toString(), startDate, endDate);
+        return await createBracket(name.toString(), description.toString(), startDate, endDate);
     }
-    
-
-    return my_state
 }
