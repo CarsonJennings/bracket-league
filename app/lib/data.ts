@@ -1,9 +1,11 @@
 import { sql } from '@vercel/postgres';
+import { getUserSession } from '@/app/lib/sessions';
+import { CreateState } from '@/app/lib/definitions';
 
 // Returns true if date2 is ahead of date1 by a year. With precision down to the day
 function isAheadAYear(date1: Date, date2: Date) {
-    const [year1, month1, day1] = [date1.getFullYear(), date1.getMonth(), date1.getDay()];
-    const [year2, month2, day2] = [date2.getFullYear(), date2.getMonth(), date2.getDay()];
+    const [year1, month1, day1] = [date1.getFullYear(), date1.getMonth(), date1.getDate()];
+    const [year2, month2, day2] = [date2.getFullYear(), date2.getMonth(), date2.getDate()];
 
     if (year2 > year1) {
         if (year2 > year1 + 1) {
@@ -32,23 +34,49 @@ export async function getLeague(name: string) {
     return rows[0];
 }
 
-export async function createLeague(user_id: bigint, name: string, description: string, startDate: Date, endDate: Date) {
+export async function createLeague(name: string, description: string, startDate: Date, endDate: Date): Promise<CreateState> {
     // Do some error handling
     if (name.length > 255) {
         console.error('Error length of name must be less than or equal to 255 character');
-        return;
+        return {
+            errors: {
+                name: "Name length exceeds 255 character max",
+            },
+            message: "Failed to create new league",
+        };
     }
-    const current_day = new Date();
-    current_day.setHours(0, 0, 0, 0);
-    if (startDate < current_day) {
-        console.error('Error start date can not be in the past');
-        return;
+
+    if (startDate > endDate) {
+        console.error('Error end date must come after start date');
+        return {
+            errors: {
+                start_date: "Start date after end date",
+                end_date: "End date after start date",
+            },
+            message: "Failed to create new league",
+        };
     }
+
     if (isAheadAYear(startDate, endDate)) {
         console.error('Error end date must be less than or equal to one year ahead of start date');
-        return;
+        return {
+            errors: {
+                end_date: "End date cannot be over a year ahead of the start date",
+            },
+            message: "Failed to create new league",
+        };
 
     }
+
+    const user = await getUserSession();
+    if (!user) {
+        return {
+            errors: { league: "Unauthorized create attempt" },
+            message: "Failed to create a new league"
+        };
+    }
+
+    const userId = user.id;
 
     // Change the date objects into the correct format to be added to the db
     const sqlStartDate: string = startDate.toISOString().slice(0, 19).replace('T', ' ');
@@ -63,34 +91,81 @@ export async function createLeague(user_id: bigint, name: string, description: s
         `;
         await sql`
             INSERT INTO user_leagues (user_id, league_id, role)
-            VALUES (${user_id.toString()}, (SELECT league_id FROM leagues WHERE name=${name}), 'super_admin')
+            VALUES (${userId.toString()}, (SELECT league_id FROM leagues WHERE name=${name}), 'super_admin')
         `;
         await sql`COMMIT`;
+        return {
+            errors: {},
+            message: "Success",
+        };
 
     } catch (error) {
         await sql`ROLLBACK`;
         console.error('unexpected error while attempting to create a new league: ', error);
+        
+        if (error instanceof Error) {
+            if (error.message.includes('duplicate key value violates unique constraint "leagues_name_key"')) {
+                return {
+                    errors: {
+                        name: "A league under that name already exists",
+                    },
+                    message: "Failed to create a new league",
+                }
+            }
+        }
+        return {
+            errors: {
+                league: "Unexepected error occured",
+            },
+            message: "Failed to create a new league",
+        };
     }
 
 } 
 
-export async function createBracket(user_id: bigint, name: string, description: string, startDate: Date, endDate: Date) {
+export async function createBracket(name: string, description: string, startDate: Date, endDate: Date): Promise<CreateState> {
     // Do some error handling
     if (name.length > 255) {
         console.error('Error length of name must be less than or equal to 255 character');
-        return;
+        return {
+            errors: {
+                name: "Name length exceeds 255 character max",
+            },
+            message: "Failed to create new bracket",
+        };
     }
-    const current_day = new Date();
-    current_day.setHours(0, 0, 0, 0);
-    if (startDate < current_day) {
-        console.error('Error start date can not be in the past');
-        return;
+
+    if (startDate > endDate) {
+        console.error('Error end date must come after start date');
+        return {
+            errors: {
+                start_date: "Start date after end date",
+                end_date: "End date after start date",
+            },
+            message: "Failed to create new bracket",
+        };
     }
+    
     if (isAheadAYear(startDate, endDate)) {
         console.error('Error end date must be less than or equal to one year ahead of start date');
-        return;
-
+        return {
+            errors: {
+                end_date: "End date cannot be over a year ahead of the start date",
+            },
+            message: "Failed to create new bracket",
+        };
     }
+
+    const user = await getUserSession();
+    if (!user) {
+        return {
+            errors: { bracket: "Unauthorized create attempt" },
+            message: "Failed to create a new bracket"
+        };
+    }
+
+    const userId = user.id;
+
 
     // Change the date objects into the correct format to be added to the db
     const sqlStartDate: string = startDate.toISOString().slice(0, 19).replace('T', ' ');
@@ -105,13 +180,35 @@ export async function createBracket(user_id: bigint, name: string, description: 
         `;
         await sql`
             INSERT INTO user_brackets (user_id, bracket_id, role)
-            VALUES (${user_id.toString()}, (SELECT bracket_id FROM brackets WHERE name=${name}), 'super_admin')
+            VALUES (${userId.toString()}, (SELECT bracket_id FROM brackets WHERE name=${name}), 'super_admin')
         `;
         await sql`COMMIT`;
+        return {
+            errors: {},
+            message: "Success",
+        };
 
     } catch (error) {
         await sql`ROLLBACK`;
         console.error('unexpected error while attempting to create a new bracket: ', error);
+
+        if (error instanceof Error) {
+            if (error.message.includes('duplicate key value violates unique constraint "brackets_name_key"')) {
+                return {
+                    errors: {
+                        name: "A bracket under that name already exists",
+                    },
+                    message: "Failed to create a new bracket",
+                }
+            }
+        }
+
+        return {
+            errors: {
+                bracket: "Unexepected error occured",
+            },
+            message: "Failed to create a new bracket",
+        };
     }
 
 }

@@ -3,6 +3,8 @@
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
 import { SignUpState, SignUpSchema } from '@/app/lib/definitions';
+import { CreateState } from '@/app/lib/definitions';
+import { createBracket, createLeague } from "@/app/lib/data";
 
 
 export async function createUser(prevState: SignUpState, formData: FormData) {
@@ -46,4 +48,40 @@ export async function createUser(prevState: SignUpState, formData: FormData) {
         message: 'Success!',
     };
 
+}
+
+
+export async function createBracketLeague(state: CreateState, formData: FormData) {
+    const createType = formData.get("type");
+    const name = formData.get("name");
+    const description = formData.get("description");
+    const rawStartDate = formData.get("start-date");
+    const rawEndDate = formData.get("end-date");
+    
+    // Just for testing. return something more useful later
+    const error_state: CreateState = {
+        errors: {
+            league: "Missing fields",
+            bracket: "Missing fields",
+        },
+        message: "Error missing fields",
+    };
+
+    if (!name || !description) {
+        return error_state;
+    }
+
+    if (!rawStartDate || !rawEndDate) {
+        return error_state;
+    }
+
+    const startDate = new Date(rawStartDate.toString());
+    const endDate = new Date(rawEndDate.toString());
+
+
+    if (createType === "league") {
+        return await createLeague(name.toString(), description.toString(), startDate, endDate);
+    } else  {
+        return await createBracket(name.toString(), description.toString(), startDate, endDate);
+    }
 }

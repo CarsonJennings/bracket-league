@@ -14,7 +14,7 @@ export default async function NavBar() {
     return (
         <nav className="flex p-4 items-center bg-gradient-to-r from-red-400 to-blue-400">
             <ul className='flex items-center w-full'>
-                    <li className='mr-16'>
+                    <li className='mr-16 flex-none'>
                         <Link href='/dashboard'>
                             <Image
                             className='rounded-xl'
@@ -27,12 +27,12 @@ export default async function NavBar() {
                     </li>
                     <li>
                         <Link href="/dashboard/brackets" className='p-4 text-white hover:text-red-100 duration-150 text-base font-semibold'>
-                            Your Brackets
+                            Brackets
                         </Link>
                     </li>
                     <li>
                         <Link href="/dashboard/leagues" className='p-4 text-white hover:text-red-100 duration-150 text-base font-semibold'>
-                            Your Leagues
+                            Leagues
                         </Link>
                     </li>
                     <li>
