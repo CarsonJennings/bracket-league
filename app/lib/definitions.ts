@@ -35,6 +35,16 @@ export const LoginSchema = z.object({
     password: z.string().nonempty({message: "No password provided"}),
 });
 
+export type CreateState = {
+    errors: {
+        name?: string;
+        description?: string;
+        start_date?: string;
+        end_date?: string;
+    };
+    message?: string | null;
+}
+
 export type User = {
     id: string;
     firstName: string;
