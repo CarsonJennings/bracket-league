@@ -8,7 +8,6 @@ export default async function LeaguesDisplay({ user } : {user: User | null}) {
     let rawLeagueData : League[] = [];
     if (user) {
         rawLeagueData = await getUserLeagues(user);
-        console.log(rawLeagueData);
     }
     
     return (

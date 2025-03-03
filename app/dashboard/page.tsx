@@ -20,7 +20,7 @@ export default async function Page() {
             </section>
 
             <section>
-                <BracketsDisplay />
+                <BracketsDisplay user={user} />
             </section>
 
         </main>
