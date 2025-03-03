@@ -1,6 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { getUserSession } from '@/app/lib/sessions';
-import { CreateState, League, User } from '@/app/lib/definitions';
+import { CreateState, League, Bracket, User } from '@/app/lib/definitions';
 
 // Returns true if date2 is ahead of date1 by a year. With precision down to the day
 function isAheadAYear(date1: Date, date2: Date) {
@@ -230,4 +230,22 @@ export async function getUserLeagues(user: User) {
     } catch (error) {
         return [];
     }
+}
+
+export async function getUserBrackets(user: User) {
+    try {
+        const { rows } = await sql`
+            SELECT * 
+            FROM brackets
+            WHERE bracket_id IN
+                (SELECT bracket_id
+                FROM user_brackets
+                WHERE user_id = ${user.id}
+            )
+        `;
+
+        return rows as Bracket[];
+    } catch (error) {
+        return [];
+    }   
 }

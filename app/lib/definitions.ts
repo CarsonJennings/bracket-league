@@ -61,3 +61,11 @@ export type League = {
     start_date: Date,
     end_date: Date
 };
+
+export type Bracket = {
+    bracket_id: string,
+    name: string,
+    description: string,
+    start_date: Date,
+    end_date: Date
+};
