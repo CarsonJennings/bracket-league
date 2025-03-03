@@ -45,11 +45,19 @@ export type CreateState = {
         end_date?: string;
     };
     message?: string | null;
-}
+};
 
 export type User = {
     id: string;
     firstName: string;
     lastName: string;
     email: string;
-}
+};
+
+export type League = {
+    league_id: string,
+    name: string,
+    description: string,
+    start_date: Date,
+    end_date: Date
+};
