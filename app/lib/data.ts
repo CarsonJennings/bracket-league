@@ -228,6 +228,7 @@ export async function getUserLeagues(user: User) {
 
         return rows as League[];
     } catch (error) {
+        console.error(error);
         return [];
     }
 }
@@ -246,6 +247,7 @@ export async function getUserBrackets(user: User) {
 
         return rows as Bracket[];
     } catch (error) {
+        console.error(error);
         return [];
     }   
 }
