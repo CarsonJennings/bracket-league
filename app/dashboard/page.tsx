@@ -6,6 +6,7 @@ import { getUserSession } from '@/app/lib/sessions';
 export const metadata: Metadata = {
     title: 'Dashboard',
     description: 'Browse all of your leagues and brackets on the dashboard page. Explore and join new brackets and leagues as well!',
+    keywords: 'Dashboard, Home, My Profile, Leagues, Brackets, Tournaments',
   }
 
 export default async function Page() {
