@@ -11,8 +11,8 @@ export default async function LeaguesDisplay({ user } : {user: User | null}) {
     }
     
     return (
-        <div className="mx-2 sm:mx-16 overflow-x-auto">
-            <div className="flex justify-between p-2 bg-red-400 text-white min-w-[30rem]">
+        <div className="mx-2 sm:mx-16 overflow-x-auto bg-gray-200 p-4 rounded-lg">
+            <div className="flex justify-between p-2 bg-red-400 text-white min-w-[30rem] rounded-t-md">
                 <h2 className="text-lg font-semibold">Your Leagues</h2>
 
                 <Link href="/dashboard/create">
@@ -22,7 +22,7 @@ export default async function LeaguesDisplay({ user } : {user: User | null}) {
                 </Link>
             </div>
 
-            <ul className="w-full text-center border-2 border-gray-300 max-h-96 min-w-[30rem] overflow-y-auto">
+            <ul className="w-full text-center  max-h-96 min-w-[30rem] overflow-y-auto">
                     <li className="flex justify-between text-lg font-semibold p-2 mb-4 bg-gray-300">
                         <p className="basis-[25%]">Name</p>
                         <p className="basis-[25%]">Description</p>

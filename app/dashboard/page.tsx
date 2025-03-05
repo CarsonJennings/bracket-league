@@ -12,14 +12,14 @@ export default async function Page() {
     const user = await getUserSession();
 
     return (
-        <main className='w-4/5 bg-gray-200 m-auto'>
-            <h1 className='text-2xl font-semibold mb-16'>The dashboard page</h1>
+        <main>
+            <h1 className='text-4xl font-bold ml-2 sm:ml-16 my-8 px-2 w-fit border-b border-black'>Dashboard</h1>
             
-            <section className='mb-16'>
+            <section className='mb-16 max-w-screen-xl m-auto'>
                 <LeaguesDisplay user={user} />
             </section>
 
-            <section>
+            <section className='max-w-screen-xl m-auto'>
                 <BracketsDisplay user={user} />
             </section>
 
