@@ -3,7 +3,8 @@ import CreateForm from '@/app/ui/dashboard/create/create-form'
 
 export const metadata: Metadata = {
   title: 'Create',
-  description: 'Create new tournament brackets and leagues',
+  description: 'Create new tournament brackets and leagues to keep track of every second of the action',
+  keywords: 'Create, Create Brackets, Create Leagues',
 }
 
 export default function Page() {

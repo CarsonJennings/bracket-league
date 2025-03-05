@@ -1,7 +1,14 @@
 import Link from "next/link"
+import { Metadata } from "next";
 import Steps from "@/app/ui/steps";
 import WhyBracketLeague from "@/app/ui/why-bracket-league";
 import LandingNavbar from "@/app/ui/landing-navbar";
+
+export const metadata: Metadata = {
+  title: 'Bracket League',
+  description: 'Welcome to Bracket League! Bracket League allows you to easily join and create your own sports leagues and tournaments so you can focus on playing the games you love!',
+  keywords: 'Bracket League, Sports, Sports League, Sports Bracket, League Manager, Tournament Manager',
+}
 
 export default function Home() {
   return (
