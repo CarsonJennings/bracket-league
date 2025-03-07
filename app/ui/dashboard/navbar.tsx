@@ -3,7 +3,7 @@ import Link from 'next/link';
 import ProfileLink from '@/app/ui/dashboard/profile-link';
 import { getSession } from "@/app/lib/sessions";
 import { User } from "@/app/lib/definitions"
-
+import MobileNav from '@/app/ui/dashboard/mobile-nav';
 
 export default async function NavBar() {
     const session = await getSession();
@@ -13,7 +13,9 @@ export default async function NavBar() {
     const user = session.user;
     return (
         <nav className="flex p-4 items-center bg-gradient-to-r from-red-400 to-blue-400">
-            <ul className='flex items-center w-full'>
+            <MobileNav user={user as User}/>
+
+            <ul className='hidden sm:flex items-center w-full'>
                     <li className='mr-16 flex-none'>
                         <Link href='/dashboard'>
                             <Image
