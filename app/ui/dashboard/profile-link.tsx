@@ -17,10 +17,10 @@ export default function ProfileLink({user}: {user: User}) {
     };
 
     return (
-    <div className="relative ">
-        <button onClick={toggleIsVisible} className="inline-flex p-4 text-white text-base font-semibold" type="button">
-            <span className="mr-4">Hello {user.firstName}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+    <>
+        <button onClick={toggleIsVisible} className="flex w-full p-4 text-white text-base font-semibold" type="button">
+            <span className="truncate">Hello {user.firstName}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 flex-shrink-0 ml-2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
             </svg>
 
@@ -28,6 +28,6 @@ export default function ProfileLink({user}: {user: User}) {
 
         <Dropdown isVisible={isVisible}/>
         
-    </div>
+    </>
     );
 }
