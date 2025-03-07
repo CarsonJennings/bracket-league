@@ -42,7 +42,7 @@ export default async function NavBar() {
                             Create
                         </Link>
                     </li>
-                    <li className='ml-auto'>
+                    <li className='ml-auto overflow-x-hidden'>
                         <ProfileLink user={(user as User)}/>
                     </li>
                 </ul>

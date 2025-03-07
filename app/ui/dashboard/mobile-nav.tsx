@@ -52,7 +52,7 @@ export default function MobileNav({user} : {user: User}) {
                         Create
                     </Link>
                 </li>
-                <li className="text-white text-base font-semibold my-1">
+                <li className="text-white text-base font-semibold my-1 truncate">
                     Hello {user.firstName},
                 </li>
                 <li className="text-white hover:text-red-100 duration-150 text-base font-semibold">
