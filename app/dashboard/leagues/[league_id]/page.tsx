@@ -1,4 +1,5 @@
 import { getLeagueData } from "@/app/lib/data";
+import TableLeagueRanking from "@/app/ui/dashboard/leagues/table-league-ranking";
 
 export default async function Page({
     params,
@@ -16,12 +17,16 @@ export default async function Page({
           <section className="py-8 bg-slate-200 flex justify-center">
             <div className="mx-4 max-w-xl flex flex-col items-center">
               <h1 className="text-4xl font-bold mb-2">{rawLeagueData.name}</h1>
-              <h3 className="text-lg font-semibold">{rawLeagueData.start_date.toDateString()} - {rawLeagueData.end_date.toDateString()}</h3>
+              <h4 className="text-lg font-semibold">{rawLeagueData.start_date.toDateString()} - {rawLeagueData.end_date.toDateString()}</h4>
               <h2 className="text-lg">{rawLeagueData.description}</h2>
             </div>
-          
           </section>
-          <section>leaderboard with teams and scoring</section>
+
+          <section>
+            <p>Add another team</p>
+            <TableLeagueRanking league_id={rawLeagueData.league_id} />
+          </section>
+          
           <section>Upcoming games</section>
         </>
     );
