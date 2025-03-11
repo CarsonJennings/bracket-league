@@ -251,3 +251,17 @@ export async function getUserBrackets(user: User) {
         return [];
     }   
 }
+
+export async function getLeagueData(league_id: string) {
+    try {
+        const { rows } = await sql`
+            SELECT *
+            FROM leagues
+            WHERE league_id = ${league_id}
+        `;
+        return rows[0] as League;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
