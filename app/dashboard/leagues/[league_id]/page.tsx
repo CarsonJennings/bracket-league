@@ -12,10 +12,17 @@ export default async function Page({
         return <div>An Unexpected error has occured</div>
     }
     return (
-        <div>
-            <div className="">
-                <h1 className="text-3xl  font-semibold">{rawLeagueData.name}</h1>
+        <>
+          <section className="py-8 bg-slate-200 flex justify-center">
+            <div className="mx-4 max-w-xl flex flex-col items-center">
+              <h1 className="text-4xl font-bold mb-2">{rawLeagueData.name}</h1>
+              <h3 className="text-lg font-semibold">{rawLeagueData.start_date.toDateString()} - {rawLeagueData.end_date.toDateString()}</h3>
+              <h2 className="text-lg">{rawLeagueData.description}</h2>
             </div>
-        </div>
+          
+          </section>
+          <section>leaderboard with teams and scoring</section>
+          <section>Upcoming games</section>
+        </>
     );
   }
