@@ -6,16 +6,16 @@ export default async function TableLeagueRanking({ league_id }: { league_id : st
   const leagueTeams: Team[] = await getLeagueTeams(league_id);
   return (
         <>
-            <table className="border-2 border-gray-700">
+            <table>
               <caption className="text-xl font-semibold mb-2">League rankings</caption>
               <thead>
                 <tr>
-                  <th scope="col" className="font-semibold border border-gray-700 px-2">Rank</th>
-                  <th scope="col" className="font-semibold border border-gray-700 px-2">Team</th>
-                  <th scope="col" className="font-semibold border border-gray-700 px-2">Games played</th>
-                  <th scope="col" className="font-semibold border border-gray-700 px-2">Wins</th>
-                  <th scope="col" className="font-semibold border border-gray-700 px-2">Losses</th>
-                  <th scope="col" className="font-semibold border border-gray-700 px-2">Ties</th>
+                  <th scope="col" className="font-semibold border-b border-gray-700 px-4">Rank</th>
+                  <th scope="col" className="font-semibold border-b border-gray-700 px-4">Team</th>
+                  <th scope="col" className="font-semibold border-b border-gray-700 px-4">Games played</th>
+                  <th scope="col" className="font-semibold border-b border-gray-700 px-4">Wins</th>
+                  <th scope="col" className="font-semibold border-b border-gray-700 px-4">Losses</th>
+                  <th scope="col" className="font-semibold border-b border-gray-700 px-4">Ties</th>
                 </tr>
               </thead>
               <tbody>
