@@ -1,6 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { getUserSession } from '@/app/lib/sessions';
-import { CreateState, League, Bracket, User, Team } from '@/app/lib/definitions';
+import { CreateState, League, Bracket, User, Team, Game } from '@/app/lib/definitions';
 
 // Returns true if date2 is ahead of date1 by a year. With precision down to the day
 function isAheadAYear(date1: Date, date2: Date) {
@@ -278,5 +278,34 @@ export async function getLeagueTeams(league_id: string) {
     } catch (error) {
         console.error(error);
         return [];
+    }
+}
+
+export async function getUpcomingLeagueGames(league_id: string, num_games: number = 10) {
+    try {
+        const { rows } = await sql`
+            SELECT *
+            FROM games
+            WHERE league_id=${league_id} AND status='scheduled'
+            LIMIT ${num_games}
+        `;
+        return rows as Game[];
+    } catch (error) {
+        console.error(error);
+        return []
+    }
+}
+
+export async function getTeamData(team_id: string) {
+    try {
+        const { rows } = await sql`
+            SELECT *
+            FROM teams
+            WHERE team_id=${team_id}
+        `;
+        return rows[0] as Team;
+    } catch (error) {
+        console.error(error);
+        return null;
     }
 }

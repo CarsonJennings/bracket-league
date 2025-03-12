@@ -80,3 +80,15 @@ export type Team = {
     league_id: string | null,
     bracket_id: string | null,
 };
+
+export type Game = {
+    game_id: string,
+    league_id: string | null,
+    bracket_id: string | null,
+    home_team_id: string,
+    away_team_id: string,
+    home_score: number,
+    away_score: number,
+    game_time: Date,
+    status: string,
+}

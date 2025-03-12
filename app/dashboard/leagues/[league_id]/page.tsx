@@ -1,5 +1,6 @@
 import { getLeagueData } from "@/app/lib/data";
 import TableLeagueRanking from "@/app/ui/dashboard/leagues/table-league-ranking";
+import UpcomingLeagueGames from "@/app/ui/dashboard/leagues/upcoming-league-games";
 
 export default async function Page({
     params,
@@ -23,11 +24,13 @@ export default async function Page({
           </section>
 
           <section>
+            <UpcomingLeagueGames league_id={rawLeagueData.league_id}/>
+          </section>
+          
+          <section>
             <p>Add another team</p>
             <TableLeagueRanking league_id={rawLeagueData.league_id} />
           </section>
-          
-          <section>Upcoming games</section>
         </>
     );
   }
