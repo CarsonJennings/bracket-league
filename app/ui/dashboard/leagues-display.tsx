@@ -32,7 +32,7 @@ export default async function LeaguesDisplay({ user } : {user: User | null}) {
 
                     <div className="p-2">
                         { rawLeagueData.map((league) => (
-                            <LeagueCard key={league.league_id} name={league.name} description={league.description} start={league.start_date} end={league.end_date} />
+                            <LeagueCard key={league.league_id} leagueId={league.league_id} name={league.name} description={league.description} start={league.start_date} end={league.end_date} />
                         )) }
                     </div>
             </ul>

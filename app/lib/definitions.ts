@@ -69,3 +69,26 @@ export type Bracket = {
     start_date: Date,
     end_date: Date
 };
+
+export type Team = {
+    team_id: string,
+    name: string,
+    games_played: number,
+    wins: number,
+    losses: number,
+    ties: number,
+    league_id: string | null,
+    bracket_id: string | null,
+};
+
+export type Game = {
+    game_id: string,
+    league_id: string | null,
+    bracket_id: string | null,
+    home_team_id: string,
+    away_team_id: string,
+    home_score: number,
+    away_score: number,
+    game_time: Date,
+    status: string,
+}
