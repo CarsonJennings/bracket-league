@@ -15,7 +15,7 @@ export default async function Page({
     }
     return (
         <>
-          <section className="py-8 bg-slate-200 flex justify-center">
+          <section className="py-8 bg-gray-200 flex justify-center">
             <div className="mx-4 max-w-xl flex flex-col items-center">
               <h1 className="text-4xl font-bold mb-2">{rawLeagueData.name}</h1>
               <h4 className="text-lg font-semibold">{rawLeagueData.start_date.toDateString()} - {rawLeagueData.end_date.toDateString()}</h4>
@@ -27,9 +27,10 @@ export default async function Page({
             <UpcomingLeagueGames league_id={rawLeagueData.league_id}/>
           </section>
           
-          <section>
-            <p>Add another team</p>
-            <TableLeagueRanking league_id={rawLeagueData.league_id} />
+          <section className="w-full overflow-x-auto p-2">
+            <div className="mx-auto mt-8 bg-gray-100 w-fit pb-2 rounded-md shadow-md">
+              <TableLeagueRanking league_id={rawLeagueData.league_id} />
+            </div>
           </section>
         </>
     );

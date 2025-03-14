@@ -6,9 +6,9 @@ export default async function TableLeagueRanking({ league_id }: { league_id : st
   const leagueTeams: Team[] = await getLeagueTeams(league_id);
   return (
         <>
-            <table>
-              <caption className="text-xl font-semibold mb-2">League rankings</caption>
-              <thead>
+            <table className="min-w-min">
+              <caption className="text-xl text-gray-100 bg-blue-400 font-semibold mb-2 p-1 rounded-t-lg">League rankings</caption>
+              <thead className="text-nowrap">
                 <tr>
                   <th scope="col" className="font-semibold border-b border-gray-700 px-4">Rank</th>
                   <th scope="col" className="font-semibold border-b border-gray-700 px-4">Team</th>
