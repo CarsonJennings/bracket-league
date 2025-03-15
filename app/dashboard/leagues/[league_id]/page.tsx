@@ -1,4 +1,5 @@
 import { getLeagueData } from "@/app/lib/data";
+import { getUserSession } from "@/app/lib/sessions";
 import TableLeagueRanking from "@/app/ui/dashboard/leagues/table-league-ranking";
 import TeamList from "@/app/ui/dashboard/leagues/team-list";
 import UpcomingLeagueGames from "@/app/ui/dashboard/leagues/upcoming-league-games";
@@ -8,6 +9,10 @@ export default async function Page({
   }: {
     params: Promise<{ league_id: string }>
   }) {
+    const user = await getUserSession();
+    if (!user) {
+      return <div>ERROR 401: Unauthorized user</div>
+    }
     const { league_id } = await params;
     const rawLeagueData = await getLeagueData(league_id);
 
@@ -36,8 +41,8 @@ export default async function Page({
             </section>
             
             <section className="overflow-x-auto p-2 lg:col-span-2">
-              <div className="bg-gray-100 w-fit pb-2 rounded-md shadow-md">
-                <TeamList league_id={rawLeagueData.league_id}/>
+              <div className="bg-gray-100 w-full pb-2 rounded-md shadow-md">
+                <TeamList user={user} league_id={rawLeagueData.league_id}/>
               </div>
             </section>
           </div>

@@ -1,8 +1,9 @@
 'use client'
 import { useState } from "react";
 import FormCreateTeam from "@/app/ui/dashboard/leagues/form-create-team";
+import { User } from "@/app/lib/definitions";
 
-export default function ButtonCreateTeam() {
+export default function ButtonCreateTeam({ user, league_id } : { user: User, league_id: string }) {
     const [isVisible, setIsvisible] = useState(false);
     
     const toggleIsVisible = () => {
@@ -19,7 +20,7 @@ export default function ButtonCreateTeam() {
 
             {isVisible ? 
             <div className="absolute z-10">
-                <FormCreateTeam />
+                <FormCreateTeam user={user} league_id={league_id} />
             </div>
             : null}
         </>

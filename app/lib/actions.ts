@@ -2,7 +2,7 @@
 
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
-import { SignUpState, SignUpSchema } from '@/app/lib/definitions';
+import { SignUpState, SignUpSchema, User } from '@/app/lib/definitions';
 import { CreateState } from '@/app/lib/definitions';
 import { createBracket, createLeague } from "@/app/lib/data";
 
@@ -83,5 +83,31 @@ export async function createBracketLeague(state: CreateState, formData: FormData
         return await createLeague(name.toString(), description.toString(), startDate, endDate);
     } else  {
         return await createBracket(name.toString(), description.toString(), startDate, endDate);
+    }
+}
+
+export async function createLeagueTeam(user: User, league_id: string, stateMessage: string, formData: FormData) {
+    try {
+        const teamName = formData.get("team-name");
+        if (typeof teamName === "string" && teamName.length <= 255) {
+            await sql `BEGIN`;
+            await sql`
+            INSERT INTO teams (name, games_played, wins, losses, league_id)
+            VALUES (${teamName}, 0, 0, 0, ${league_id})
+            `;
+            await sql `
+            INSERT INTO user_teams (user_id, team_id, role)
+            VALUES (${user.id}, (SELECT team_id FROM teams WHERE name=${teamName} AND league_id=league_id), 'manager')
+            `;
+            await sql`COMMIT`;
+        } else {
+            await sql`ROLLBACK`
+            return "Error invalid name";
+        }
+
+        return "Success";
+    } catch (error) {
+        console.error(error);
+        return "There was an error";
     }
 }
