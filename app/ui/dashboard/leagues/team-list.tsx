@@ -15,7 +15,7 @@ export default async function TeamList({ user, league_id } : { user: User, leagu
             </div>
             <ul>
                 {teams.map((team) => (
-                    <TeamListElement key={team.team_id} team={team} />
+                    <TeamListElement key={team.team_id} team={team} user_id={user.id}/>
                 ))} 
             </ul>
         </>

@@ -1,13 +1,16 @@
+'use client'
+
 import { Team } from "@/app/lib/definitions";
 import Link from "next/link";
+import { joinLeagueTeam } from "@/app/lib/actions";
 
-export default function TeamListElement({ team } : { team: Team}) {
+export default function TeamListElement({ team, user_id } : { team: Team, user_id: string}) {
     return (
         <li className="border-b flex justify-between p-1 gap-2 items-center">
             <Link href="#">
                 {team.name}
             </Link>
-            <button className="p-2 bg-red-400 text-sm text-white rounded-md hover:bg-red-500">
+            <button onClick={() => {joinLeagueTeam(user_id, team.team_id)}} className="p-2 bg-red-400 text-sm text-white rounded-md hover:bg-red-500">
                 Join
             </button>
         </li>

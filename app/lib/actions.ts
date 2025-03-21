@@ -111,3 +111,16 @@ export async function createLeagueTeam(user: User, league_id: string, stateMessa
         return "There was an error";
     }
 }
+
+export async function joinLeagueTeam(user_id: string, team_id: string) {
+    try {
+        await sql`
+            INSERT INTO user_teams (user_id, team_id, role)
+            VALUES (${user_id}, ${team_id}, 'player')
+        `;
+        return "Success";
+    } catch (error) {
+        console.error(error);
+        return "Error unable to join league";
+    }
+}
