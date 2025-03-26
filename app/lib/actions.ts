@@ -124,3 +124,16 @@ export async function joinLeagueTeam(user_id: string, team_id: string) {
         return "Error unable to join league";
     }
 }
+
+export async function deleteTeam(team_id: string) {
+    try {
+        await sql`
+        DELETE FROM teams
+        WHERE team_id = ${team_id}
+        `;
+        return "success";
+    } catch (error) {
+        console.error(error);
+        return "Unexpected error while attempting to delete team";
+    }
+}

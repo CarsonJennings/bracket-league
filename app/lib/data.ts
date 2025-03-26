@@ -328,3 +328,17 @@ export async function isUserInLeague(user_id: string, league_id: string) {
         return null;
     }
 }
+
+export async function getLeagueAdmin(league_id: string) {
+    try {
+        const { rows } = await sql`
+        SELECT user_id
+        FROM user_leagues
+        WHERE league_id = ${league_id} AND role = 'super_admin'
+        `;
+        return rows[0] ? rows[0] : null;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}

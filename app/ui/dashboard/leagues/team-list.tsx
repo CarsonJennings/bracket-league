@@ -1,13 +1,17 @@
-import { getLeagueTeams, isUserInLeague } from "@/app/lib/data";
+import { getLeagueAdmin, getLeagueTeams, isUserInLeague } from "@/app/lib/data";
 import { User } from "@/app/lib/definitions";
 import TeamListElement from "@/app/ui/dashboard/leagues/team-list-element";
 import ButtonCreateTeam from "@/app/ui/dashboard/leagues/button-create-team";
 
+
 export default async function TeamList({ user, league_id } : { user: User, league_id: string }) {
     const teams = await getLeagueTeams(league_id);
 
-    // Do some checking if player is already on team in the league
+    // Do some checking if player is already on team in the league or an admin
     const userInLeague = await isUserInLeague(user.id, league_id);
+    
+    const leagueAdmin = await getLeagueAdmin(league_id);
+    const isLeagueAdmin: boolean = leagueAdmin ? leagueAdmin.user_id === user.id : false;
 
     return (
         <>
@@ -18,7 +22,7 @@ export default async function TeamList({ user, league_id } : { user: User, leagu
             </div>
             <ul>
                 {teams.map((team) => (
-                    <TeamListElement key={team.team_id} team={team} user_id={user.id} can_join={userInLeague ? false : true}/>
+                    <TeamListElement key={team.team_id} team={team} user_id={user.id} can_join={userInLeague ? false : true} is_admin={isLeagueAdmin}/>
                 ))} 
             </ul>
         </>
