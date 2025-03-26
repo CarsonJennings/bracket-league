@@ -309,3 +309,36 @@ export async function getTeamData(team_id: string) {
         return null;
     }
 }
+
+
+// If the user is in the league return the team_id, otherwise return null
+export async function isUserInLeague(user_id: string, league_id: string) {
+    try {
+        const { rows } = await sql`
+        SELECT team_id
+        FROM user_teams
+        WHERE user_id = ${user_id} AND team_id IN (SELECT team_id
+            FROM teams
+            WHERE league_id = ${league_id})
+        `;
+        
+        return rows[0] ? rows[0] : null;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export async function getLeagueAdmin(league_id: string) {
+    try {
+        const { rows } = await sql`
+        SELECT user_id
+        FROM user_leagues
+        WHERE league_id = ${league_id} AND role = 'super_admin'
+        `;
+        return rows[0] ? rows[0] : null;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
