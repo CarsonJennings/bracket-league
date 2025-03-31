@@ -33,18 +33,28 @@ export default async function Page({
             <UpcomingLeagueGames league_id={rawLeagueData.league_id}/>
           </section>
           
-          <div className="flex flex-col lg:grid lg:grid-cols-4 lg:gap-4">
-            <section className="overflow-x-auto p-2 lg:col-span-2">
-              <div className="bg-gray-100 w-fit pb-2 rounded-md shadow-md">
-                <TableLeagueRanking league_id={rawLeagueData.league_id} />
-              </div>
-            </section>
-            
-            <section className="overflow-x-auto p-2 lg:col-span-2">
-              <div className="bg-gray-100 w-full pb-2 rounded-md shadow-md">
-                <TeamList user={user} league_id={rawLeagueData.league_id}/>
-              </div>
-            </section>
+          <div className="flex overflow-auto">
+            <aside className="w-32 p-4 bg-gray-100">
+                <nav className="">
+                  <a href="#" className="block p-2 hover:bg-gray-200 rounded">Home</a>
+                  <a href="#" className="block p-2 hover:bg-gray-200 rounded">Profile</a>
+                  <a href="#" className="block p-2 hover:bg-gray-200 rounded">Settings</a>
+                </nav>
+            </aside>
+
+            <div className="flex flex-col flex-1">
+              <section className="overflow-x-auto p-2">
+                <div className="bg-gray-100 w-full pb-2 rounded-md shadow-md">
+                  <TableLeagueRanking league_id={rawLeagueData.league_id} />
+                </div>
+              </section>
+              
+              <section className="overflow-x-auto p-2">
+                <div className="bg-gray-100 w-full pb-2 rounded-md shadow-md">
+                  <TeamList user={user} league_id={rawLeagueData.league_id}/>
+                </div>
+              </section>
+            </div>
           </div>
         </>
     );
