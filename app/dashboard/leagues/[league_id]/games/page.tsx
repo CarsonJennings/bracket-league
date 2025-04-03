@@ -38,17 +38,7 @@ export default async function Page({
             <LeagueContentSideNav league_id={league_id}/>
 
             <div className="flex flex-col flex-1">
-              <section className="overflow-x-auto p-2">
-                <div className="bg-gray-100 w-full pb-2 rounded-md shadow-md">
-                  <TableLeagueRanking league_id={rawLeagueData.league_id} />
-                </div>
-              </section>
-              
-              <section className="overflow-x-auto p-2">
-                <div className="bg-gray-100 w-full pb-2 rounded-md shadow-md">
-                  <TeamList user={user} league_id={rawLeagueData.league_id}/>
-                </div>
-              </section>
+              Some new content
             </div>
           </div>
         </>
