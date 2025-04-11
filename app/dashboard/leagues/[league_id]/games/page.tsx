@@ -1,9 +1,8 @@
 import { getLeagueData } from "@/app/lib/data";
 import { getUserSession } from "@/app/lib/sessions";
 import LeagueContentSideNav from "@/app/ui/dashboard/leagues/league-content-side-nav";
-import TableLeagueRanking from "@/app/ui/dashboard/leagues/table-league-ranking";
-import TeamList from "@/app/ui/dashboard/leagues/team-list";
 import UpcomingLeagueGames from "@/app/ui/dashboard/leagues/upcoming-league-games";
+import GamesDisplay from "@/app/ui/dashboard/leagues/games/games-display";
 
 export default async function Page({
     params,
@@ -38,7 +37,7 @@ export default async function Page({
             <LeagueContentSideNav league_id={league_id}/>
 
             <div className="flex flex-col flex-1">
-              Some new content
+              <GamesDisplay league_id={league_id}/>
             </div>
           </div>
         </>

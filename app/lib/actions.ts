@@ -2,7 +2,7 @@
 
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
-import { SignUpState, SignUpSchema, User } from '@/app/lib/definitions';
+import { SignUpState, SignUpSchema, User, Game } from '@/app/lib/definitions';
 import { CreateState } from '@/app/lib/definitions';
 import { createBracket, createLeague } from "@/app/lib/data";
 
@@ -135,5 +135,19 @@ export async function deleteTeam(team_id: string) {
     } catch (error) {
         console.error(error);
         return "Unexpected error while attempting to delete team";
+    }
+}
+
+export async function getLeagueGamesInRange(league_id: string, start_date: Date, end_date: Date) {
+    try {
+        const { rows } = await sql`
+            SELECT *
+            FROM games
+            WHERE league_id=${league_id} AND game_time>=${start_date.toISOString()} AND game_time<=${end_date.toISOString()}
+        `;
+        return rows as Game[];
+    } catch (error) {
+        console.error(error);
+        return [];
     }
 }
