@@ -1,6 +1,8 @@
+'use server'
+
 import { sql } from '@vercel/postgres';
 import { getUserSession } from '@/app/lib/sessions';
-import { CreateState, League, Bracket, User, Team, Game } from '@/app/lib/definitions';
+import { CreateState, League, Bracket, User, Team, Game, GameWithTeamNames } from '@/app/lib/definitions';
 
 // Returns true if date2 is ahead of date1 by a year. With precision down to the day
 function isAheadAYear(date1: Date, date2: Date) {
@@ -340,5 +342,32 @@ export async function getLeagueAdmin(league_id: string) {
     } catch (error) {
         console.error(error);
         return null;
+    }
+}
+
+export async function getLeagueGamesInRange(league_id: string, start_date: Date, end_date: Date) {
+    try {
+        const { rows } = await sql`
+            SELECT 
+                games.game_id,
+                games.league_id,
+                games.bracket_id,
+                games.home_team_id,
+                home_team.name AS home_team_name,
+                games.away_team_id,
+                away_team.name AS away_team_name,
+                games.home_score,
+                games.away_score,
+                games.game_time,
+                games.status
+            FROM games
+            INNER JOIN teams AS home_team ON games.home_team_id = home_team.team_id
+            INNER JOIN teams AS away_team ON games.away_team_id = away_team.team_id
+            WHERE games.league_id=${league_id} AND games.game_time>=${start_date.toISOString()} AND games.game_time<=${end_date.toISOString()}
+        `;
+        return rows as GameWithTeamNames[];
+    } catch (error) {
+        console.error(error);
+        return [];
     }
 }

@@ -1,7 +1,9 @@
-export default function GameCard() {
+import { GameWithTeamNames } from "@/app/lib/definitions";
+
+export default function GameCard({ game }: { game: GameWithTeamNames }) {
     return (
         <div>
-            Game Card
+            {game.home_team_name} vs {game.away_team_name}
         </div>
     );
 }

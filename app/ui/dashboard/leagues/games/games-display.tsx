@@ -1,7 +1,7 @@
 'use client'
 
-import { getLeagueGamesInRange } from "@/app/lib/actions";
-import { Game } from "@/app/lib/definitions";
+import { getLeagueGamesInRange } from "@/app/lib/data";
+import { GameWithTeamNames } from "@/app/lib/definitions";
 import GameCard from "@/app/ui/dashboard/leagues/games/game-card";
 import { useEffect, useState } from "react";
 
@@ -11,7 +11,7 @@ export default function GamesDisplay({ league_id }: { league_id: string }) {
     const default_end_date = new Date(cur_day.getTime() + 1000 * 60 * 60 * 24 * 2); // 2 days ahead default
     const [start_date, set_start_date] = useState(default_start_date.toISOString().split('T')[0]);
     const [end_date, set_end_date] = useState(default_end_date.toISOString().split('T')[0]);
-    const [games, setGames] = useState<Game[]>([]);
+    const [games, setGames] = useState<GameWithTeamNames[]>([]);
 
     useEffect(() => {
         const fetchGames = async () => {
@@ -42,7 +42,7 @@ export default function GamesDisplay({ league_id }: { league_id: string }) {
             </div>
 
             {games.map((game) => (
-                <GameCard key={game.game_id}/>
+                <GameCard key={game.game_id} game={game}/>
             ))}
         </div>
     );
