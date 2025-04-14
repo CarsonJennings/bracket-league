@@ -289,6 +289,7 @@ export async function getUpcomingLeagueGames(league_id: string, num_games: numbe
             SELECT *
             FROM games
             WHERE league_id=${league_id} AND status='scheduled'
+            ORDER BY game_time
             LIMIT ${num_games}
         `;
         return rows as Game[];
@@ -364,6 +365,7 @@ export async function getLeagueGamesInRange(league_id: string, start_date: Date,
             INNER JOIN teams AS home_team ON games.home_team_id = home_team.team_id
             INNER JOIN teams AS away_team ON games.away_team_id = away_team.team_id
             WHERE games.league_id=${league_id} AND games.game_time>=${start_date.toISOString()} AND games.game_time<=${end_date.toISOString()}
+            ORDER BY games.game_time
         `;
         return rows as GameWithTeamNames[];
     } catch (error) {

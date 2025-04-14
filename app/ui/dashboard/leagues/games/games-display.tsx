@@ -41,9 +41,14 @@ export default function GamesDisplay({ league_id }: { league_id: string }) {
                 </div>
             </div>
 
-            {games.map((game) => (
-                <GameCard key={game.game_id} game={game}/>
-            ))}
+            { games.length > 0 ?
+                <ul className="grid lg:grid-cols-3 md:grid-cols-2">
+                    {games.map((game) => (
+                        <GameCard key={game.game_id} game={game}/>
+                    ))}
+                </ul> :
+                <p className=" mt-4 text-center font-semibold">No games to display in this range</p>
+            }
         </div>
     );
 }
