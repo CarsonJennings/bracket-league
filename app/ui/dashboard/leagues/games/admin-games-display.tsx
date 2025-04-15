@@ -1,12 +1,12 @@
 'use client'
 
 import { getLeagueGamesInRange } from "@/app/lib/data";
-import { GameWithTeamNames } from "@/app/lib/definitions";
+import { GameWithTeamNames, Team } from "@/app/lib/definitions";
 import GameCard from "@/app/ui/dashboard/leagues/games/game-card";
 import { useEffect, useState } from "react";
 import ButtonScheduleGame from "@/app/ui/dashboard/leagues/games/button-schedule-game";
 
-export default function AdminGamesDisplay({ league_id }: { league_id: string }) {
+export default function AdminGamesDisplay({ league_id, teams }: { league_id: string, teams: Team[]}) {
     const cur_day = new Date();
     const default_start_date = new Date(cur_day.getTime() - 1000 * 60 * 60 * 24 * 2); // 2 days behind default
     const default_end_date = new Date(cur_day.getTime() + 1000 * 60 * 60 * 24 * 2); // 2 days ahead default
@@ -43,7 +43,7 @@ export default function AdminGamesDisplay({ league_id }: { league_id: string }) 
             </div>
 
             <div className="flex flex-col items-center my-4">
-                <ButtonScheduleGame />
+                <ButtonScheduleGame teams={teams} league_id={league_id}/>
             </div>
 
             { games.length > 0 ?

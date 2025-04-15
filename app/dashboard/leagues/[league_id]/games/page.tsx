@@ -1,9 +1,10 @@
-import { getLeagueAdmin, getLeagueData } from "@/app/lib/data";
+import { getLeagueAdmin, getLeagueData, getLeagueTeams } from "@/app/lib/data";
 import { getUserSession } from "@/app/lib/sessions";
 import LeagueContentSideNav from "@/app/ui/dashboard/leagues/league-content-side-nav";
 import UpcomingLeagueGames from "@/app/ui/dashboard/leagues/upcoming-league-games";
 import GamesDisplay from "@/app/ui/dashboard/leagues/games/games-display";
 import AdminGamesDisplay from "@/app/ui/dashboard/leagues/games/admin-games-display";
+import { Team } from "@/app/lib/definitions";
 
 export default async function Page({
     params,
@@ -20,6 +21,7 @@ export default async function Page({
     if (!rawLeagueData) {
         return <div>An Unexpected error has occured</div>
     }
+    const leagueTeams: Team[] = await getLeagueTeams(league_id);
 
     const leagueAdmin = await getLeagueAdmin(league_id);
     const isLeagueAdmin: boolean = leagueAdmin ? leagueAdmin.user_id === user.id : false;
@@ -44,7 +46,7 @@ export default async function Page({
             <div className="flex flex-col flex-1">
               {
                 isLeagueAdmin ?
-                <AdminGamesDisplay league_id={league_id}/> : 
+                <AdminGamesDisplay league_id={league_id} teams={leagueTeams}/> : 
                 <GamesDisplay league_id={league_id}/>
               }
             </div>

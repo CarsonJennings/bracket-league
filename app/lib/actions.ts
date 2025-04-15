@@ -2,6 +2,7 @@
 
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
+import { z } from 'zod';
 import { SignUpState, SignUpSchema, User, GameWithTeamNames } from '@/app/lib/definitions';
 import { CreateState } from '@/app/lib/definitions';
 import { createBracket, createLeague } from "@/app/lib/data";
@@ -138,3 +139,33 @@ export async function deleteTeam(team_id: string) {
     }
 }
 
+export async function scheduleLeagueGame(league_id: string, stateMessage: string, formData: FormData) {
+    // Validate the form
+    const scheduleLeagueGameSchema = z.object({
+        home_team_id: z.string(),
+        away_team_id: z.string(),
+        game_time: z.coerce.date(),
+    }).refine((data) => data.home_team_id !== data.away_team_id);
+    const validatedGame = scheduleLeagueGameSchema.safeParse({
+        home_team_id: formData.get("home-team"),
+        away_team_id: formData.get("away-team"),
+        game_time: formData.get("game-time"),
+    });
+
+    if (!validatedGame.success) {
+        return "Error: form data is invalid";
+    }
+    // form validation successful
+    const { home_team_id, away_team_id, game_time } = validatedGame.data;
+
+    try {
+        await sql`
+            INSERT INTO games (league_id, home_team_id, away_team_id, home_score, away_score, game_time, status)
+            VALUES (${league_id}, ${home_team_id}, ${away_team_id}, 0, 0, ${game_time.toString().slice(4,24)}, 'scheduled')
+        `;
+        return "Success";
+    } catch (error) {
+        console.error(error);
+        return "Unexpected error. Unable to schedule game";
+    }
+}
