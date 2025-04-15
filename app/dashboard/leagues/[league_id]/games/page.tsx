@@ -1,8 +1,9 @@
-import { getLeagueData } from "@/app/lib/data";
+import { getLeagueAdmin, getLeagueData } from "@/app/lib/data";
 import { getUserSession } from "@/app/lib/sessions";
 import LeagueContentSideNav from "@/app/ui/dashboard/leagues/league-content-side-nav";
 import UpcomingLeagueGames from "@/app/ui/dashboard/leagues/upcoming-league-games";
 import GamesDisplay from "@/app/ui/dashboard/leagues/games/games-display";
+import AdminGamesDisplay from "@/app/ui/dashboard/leagues/games/admin-games-display";
 
 export default async function Page({
     params,
@@ -19,6 +20,10 @@ export default async function Page({
     if (!rawLeagueData) {
         return <div>An Unexpected error has occured</div>
     }
+
+    const leagueAdmin = await getLeagueAdmin(league_id);
+    const isLeagueAdmin: boolean = leagueAdmin ? leagueAdmin.user_id === user.id : false;
+
     return (
         <>
           <section className="py-8 bg-gray-200 flex justify-center">
@@ -37,7 +42,11 @@ export default async function Page({
             <LeagueContentSideNav league_id={league_id}/>
 
             <div className="flex flex-col flex-1">
-              <GamesDisplay league_id={league_id}/>
+              {
+                isLeagueAdmin ?
+                <AdminGamesDisplay league_id={league_id}/> : 
+                <GamesDisplay league_id={league_id}/>
+              }
             </div>
           </div>
         </>
