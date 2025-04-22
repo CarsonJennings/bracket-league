@@ -2,7 +2,7 @@
 
 import { getLeagueGamesInRange } from "@/app/lib/data";
 import { GameWithTeamNames, Team } from "@/app/lib/definitions";
-import GameCard from "@/app/ui/dashboard/leagues/games/game-card";
+import AdminGamesCard from "@/app/ui/dashboard/leagues/games/admin-games-card";
 import { useEffect, useState } from "react";
 import ButtonScheduleGame from "@/app/ui/dashboard/leagues/games/button-schedule-game";
 
@@ -49,7 +49,7 @@ export default function AdminGamesDisplay({ league_id, teams }: { league_id: str
             { games.length > 0 ?
                 <ul className="grid lg:grid-cols-3 md:grid-cols-2">
                     {games.map((game) => (
-                        <GameCard key={game.game_id} game={game}/>
+                        <AdminGamesCard key={game.game_id} game={game}/>
                     ))}
                 </ul> :
                 <p className=" mt-4 text-center font-semibold">No games to display in this range</p>
