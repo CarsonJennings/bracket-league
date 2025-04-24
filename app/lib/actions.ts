@@ -3,7 +3,7 @@
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import { SignUpState, SignUpSchema, User, GameWithTeamNames } from '@/app/lib/definitions';
+import { SignUpState, SignUpSchema, User, GameWithTeamNames, Game } from '@/app/lib/definitions';
 import { CreateState } from '@/app/lib/definitions';
 import { createBracket, createLeague } from "@/app/lib/data";
 
@@ -167,5 +167,173 @@ export async function scheduleLeagueGame(league_id: string, stateMessage: string
     } catch (error) {
         console.error(error);
         return "Unexpected error. Unable to schedule game";
+    }
+}
+
+export async function updateGame(game: Game, stateMessage: string, formData: FormData) {
+    // Return 1 if the home team won, -1 if away team won and 0 if it is a tie
+    function getGameResult(home_score: number, away_score: number) {
+        if (home_score > away_score) {
+            return 1;
+        } else if (away_score > home_score) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+ 
+    // Validate the form
+    const updatedLeagueGameSchema = z.object({
+        home_team_score: z.coerce.number(),
+        away_team_score: z.coerce.number(),
+        game_status: z.string(),
+    }).refine((data) => data.game_status === "scheduled" || data.game_status === "completed" || data.game_status ==="canceled");
+    const validatedGame = updatedLeagueGameSchema.safeParse({
+        home_team_score: formData.get("home-score"),
+        away_team_score: formData.get("away-score"),
+        game_status: formData.get("game-status"),
+    });
+
+    if (!validatedGame.success) {
+        return "Error: form data is invalid";
+    }
+
+    const {home_team_score, away_team_score, game_status} = validatedGame.data;
+
+    const prev_result = getGameResult(game.home_score, game.away_score);
+    const new_result = getGameResult(home_team_score, away_team_score)
+    // DB logic to ensure team stats are updated properly
+    let db_query = `
+        UPDATE games
+        SET home_score = ${home_team_score}, away_score = ${away_team_score}, status = \'${game_status}\'
+        WHERE game_id = ${game.game_id};
+    `;
+    if (game_status !== "completed") {
+        if (game.status === "completed") { // Need to rollback wins and losses and games played
+            if (prev_result === 1) {
+                db_query += `
+                    UPDATE teams
+                    SET games_played = games_played - 1, wins = wins - 1
+                    WHERE team_id = ${game.home_team_id};
+
+                    UPDATE teams
+                    SET games_played = games_played - 1, losses = losses - 1
+                    WHERE team_id = ${game.away_team_id};
+                `;
+            } else if (prev_result === -1) {
+                db_query += `
+                    UPDATE teams
+                    SET games_played = games_played - 1, losses = losses - 1
+                    WHERE team_id = ${game.home_team_id};
+
+                    UPDATE teams
+                    SET games_played = games_played - 1, wins = wins - 1
+                    WHERE team_id = ${game.away_team_id};
+                `;
+            } else {
+                db_query += `
+                    UPDATE teams
+                    SET games_played = games_played - 1
+                    WHERE team_id = ${game.home_team_id};
+
+                    UPDATE teams
+                    SET games_played = games_played - 1
+                    WHERE team_id = ${game.away_team_id};
+                `;
+            }
+        }
+    } else {
+        if (game.status !== "completed") { // normal case where game is finished and marked as completed
+            if (new_result === 1) {
+                db_query += `
+                    UPDATE teams
+                    SET games_played = games_played + 1, wins = wins + 1
+                    WHERE team_id = ${game.home_team_id};
+
+                    UPDATE teams
+                    SET games_played = games_played + 1, losses = losses + 1
+                    WHERE team_id = ${game.away_team_id};
+                `;
+            } else if (new_result === -1) {
+                db_query += `
+                    UPDATE teams
+                    SET games_played = games_played + 1, losses = losses + 1
+                    WHERE team_id = ${game.home_team_id};
+
+                    UPDATE teams
+                    SET games_played = games_played + 1, wins = wins + 1
+                    WHERE team_id = ${game.away_team_id};
+                `;
+            } else {
+                db_query += `
+                    UPDATE teams
+                    SET games_played = games_played + 1
+                    WHERE team_id = ${game.home_team_id};
+
+                    UPDATE teams
+                    SET games_played = games_played + 1
+                    WHERE team_id = ${game.away_team_id};
+                `;
+            }
+        } else { // updating a completed game without changing status
+            if (prev_result !== new_result) { // result has been changed
+                if (new_result === 1) {
+                    db_query += `
+                        UPDATE teams
+                        SET wins = wins + 1, losses = losses + ${prev_result}
+                        WHERE team_id = ${game.home_team_id};
+    
+                        UPDATE teams
+                        SET losses = losses + 1, wins = wins + ${prev_result}
+                        WHERE team_id = ${game.away_team_id};
+                    `;
+                } else if (new_result === -1) {
+                    db_query += `
+                        UPDATE teams
+                        SET losses = losses + 1, wins = wins - ${prev_result}
+                        WHERE team_id = ${game.home_team_id};
+    
+                        UPDATE teams
+                        SET wins = wins + 1, losses = losses - ${prev_result}
+                        WHERE team_id = ${game.away_team_id};
+                    `;
+                } else {
+                    if (prev_result === 1) {
+                        db_query += `
+                            UPDATE teams
+                            SET wins = wins - 1 
+                            WHERE team_id = ${game.home_team_id};
+        
+                            UPDATE teams
+                            SET losses = losses - 1
+                            WHERE team_id = ${game.away_team_id};
+                        `;
+                    } else {
+                        db_query += `
+                            UPDATE teams
+                            SET losses = losses - 1 
+                            WHERE team_id = ${game.home_team_id};
+        
+                            UPDATE teams
+                            SET wins = wins - 1
+                            WHERE team_id = ${game.away_team_id};
+                        `;
+                    }
+                }
+            }
+        }
+    }
+
+    console.log(db_query);
+    try {
+        await sql`BEGIN`;
+        await sql.query(db_query);
+        await sql`COMMIT`;
+
+        return "Success";
+    } catch (error) {
+        await sql`ROLLBACK`
+        console.error(error);
+        return "Unexpected error. Unable to update game";
     }
 }
