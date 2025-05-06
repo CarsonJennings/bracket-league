@@ -6,7 +6,6 @@ export default function LeagueContentSideNav({ league_id }: {league_id: string})
             <nav className="">
                 <Link href={`/dashboard/leagues/${encodeURIComponent(league_id)}/`} className="block p-2 hover:bg-gray-200 rounded">Home</Link>
                 <Link href={`/dashboard/leagues/${encodeURIComponent(league_id)}/games`} className="block p-2 hover:bg-gray-200 rounded">Games</Link>
-                <Link href="#" className="block p-2 hover:bg-gray-200 rounded">My team</Link>
             </nav>
         </aside>
     );

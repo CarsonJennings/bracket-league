@@ -324,7 +324,6 @@ export async function updateGame(game: Game, stateMessage: string, formData: For
         }
     }
 
-    console.log(db_query);
     try {
         await sql`BEGIN`;
         await sql.query(db_query);
