@@ -3,7 +3,7 @@
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import { SignUpState, SignUpSchema, User, GameWithTeamNames, Game } from '@/app/lib/definitions';
+import { SignUpState, SignUpSchema, User, Game } from '@/app/lib/definitions';
 import { CreateState } from '@/app/lib/definitions';
 import { createBracket, createLeague } from "@/app/lib/data";
 

@@ -41,6 +41,9 @@ export default function FormUpdateGame({ game, refreshGames, closeEdit }: { game
             {
                 isLoading ? <p>Loading...</p> : null
             }
+            {
+                formState === "" ? null : <p>{formState}</p>
+            }
         </form>
     );
 }
