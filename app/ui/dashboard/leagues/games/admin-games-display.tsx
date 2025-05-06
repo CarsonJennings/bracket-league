@@ -13,6 +13,10 @@ export default function AdminGamesDisplay({ league_id, teams }: { league_id: str
     const [start_date, set_start_date] = useState(default_start_date.toISOString().split('T')[0]);
     const [end_date, set_end_date] = useState(default_end_date.toISOString().split('T')[0]);
     const [games, setGames] = useState<GameWithTeamNames[]>([]);
+    const [refreshKey, setRefreshKey] = useState(0);
+    const refreshGames = () => {
+        setRefreshKey(refreshKey + 1);
+    };
 
     useEffect(() => {
         const fetchGames = async () => {
@@ -21,7 +25,7 @@ export default function AdminGamesDisplay({ league_id, teams }: { league_id: str
         };
 
         fetchGames();
-    }, [start_date, end_date, league_id]);
+    }, [start_date, end_date, league_id, refreshKey]);
 
     return (
         <div>
@@ -49,7 +53,7 @@ export default function AdminGamesDisplay({ league_id, teams }: { league_id: str
             { games.length > 0 ?
                 <ul className="grid lg:grid-cols-3 md:grid-cols-2">
                     {games.map((game) => (
-                        <AdminGamesCard key={game.game_id} game={game}/>
+                        <AdminGamesCard key={game.game_id} game={game} refreshGames={refreshGames}/>
                     ))}
                 </ul> :
                 <p className=" mt-4 text-center font-semibold">No games to display in this range</p>

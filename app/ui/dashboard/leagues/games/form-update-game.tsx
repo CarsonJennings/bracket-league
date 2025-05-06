@@ -1,8 +1,20 @@
-import { GameWithTeamNames } from "@/app/lib/definitions";
+'use client'
 
-export default function FormUpdateGame({ game }: { game: GameWithTeamNames }) {
+import { GameWithTeamNames } from "@/app/lib/definitions";
+import { updateGame } from "@/app/lib/actions";
+import { useActionState } from "react";
+
+export default function FormUpdateGame({ game, refreshGames, closeEdit }: { game: GameWithTeamNames, refreshGames: () => void, closeEdit: () => void }) {
+    const updateGameBind = updateGame.bind(null, game);
+    const [formState, formAction, isLoading] = useActionState(updateGameBind, "");
+    const handleUpdate = (formData: FormData) => {
+        formAction(formData);
+        refreshGames();
+        closeEdit();
+    };
+
     return (
-        <form action="">
+        <form action={handleUpdate}>
             <div className="flex font-bold text-lg text-red-400">
                 <span className="w-10/12">
                     {game.home_team_name}
@@ -20,7 +32,15 @@ export default function FormUpdateGame({ game }: { game: GameWithTeamNames }) {
                 <option value="completed">completed</option>
                 <option value="canceled">canceled</option>
             </select>
-            <button className="block mt-4 py-1 w-full bg-red-400 font-semibold text-white rounded-md" type="submit">Save</button>
+            {
+                isLoading ? 
+                <button className="block mt-4 py-1 w-full bg-red-200 font-semibold text-white rounded-md" type="submit" disabled={true}>Save</button>
+                : <button className="block mt-4 py-1 w-full bg-red-400 font-semibold text-white rounded-md" type="submit" disabled={false}>Save</button>
+
+            }
+            {
+                isLoading ? <p>Loading...</p> : null
+            }
         </form>
     );
 }

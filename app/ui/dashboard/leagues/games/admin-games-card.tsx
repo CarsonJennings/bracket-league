@@ -4,7 +4,7 @@ import { GameWithTeamNames } from "@/app/lib/definitions";
 import FormUpdateGame from "@/app/ui/dashboard/leagues/games/form-update-game";
 import { useState } from "react";
 
-export default function AdminGamesCard({ game }: { game: GameWithTeamNames }) {
+export default function AdminGamesCard({ game, refreshGames }: { game: GameWithTeamNames, refreshGames: () => void}) {
     const [isEditing, setIsEditing] = useState(false);
     const handleEditClick = () => {setIsEditing(!isEditing);}
     
@@ -20,7 +20,7 @@ export default function AdminGamesCard({ game }: { game: GameWithTeamNames }) {
                     <div className="text-center">
                         {game.game_time.toString().slice(4,25)}
                     </div>
-                    <FormUpdateGame game={game}/>
+                    <FormUpdateGame game={game} refreshGames={refreshGames} closeEdit={handleEditClick}/>
                 </>
                 :
                 <>
