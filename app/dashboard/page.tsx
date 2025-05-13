@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import LeaguesDisplay from '@/app/ui/dashboard/leagues-display';
 import BracketsDisplay from '@/app/ui/dashboard/brackets-display';
+import BracketLeagueSearch from '@/app/ui/dashboard/bracket-league-search';
 import { getUserSession } from '@/app/lib/sessions';
 
 export const metadata: Metadata = {
@@ -16,7 +17,9 @@ export default async function Page() {
         <main>
             <h1 className='text-4xl font-bold ml-2 sm:ml-16 my-8 px-2 w-fit border-b border-black'>Dashboard</h1>
             
-            <section className='mb-16 max-w-screen-xl m-auto'>
+            <BracketLeagueSearch />
+
+            <section className='mt-8 mb-16 max-w-screen-xl m-auto'>
                 <LeaguesDisplay user={user} />
             </section>
 
