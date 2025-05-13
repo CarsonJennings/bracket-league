@@ -91,4 +91,18 @@ export type Game = {
     away_score: number,
     game_time: Date,
     status: string,
-}
+};
+
+export type GameWithTeamNames = {
+    game_id: string,
+    league_id: string | null,
+    bracket_id: string | null,
+    home_team_id: string,
+    home_team_name : string,
+    away_team_id: string,
+    away_team_name : string,
+    home_score: number,
+    away_score: number,
+    game_time: Date,
+    status: string,
+};

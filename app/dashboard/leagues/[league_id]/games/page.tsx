@@ -1,9 +1,10 @@
-import { getLeagueData } from "@/app/lib/data";
+import { getLeagueAdmin, getLeagueData, getLeagueTeams } from "@/app/lib/data";
 import { getUserSession } from "@/app/lib/sessions";
 import LeagueContentSideNav from "@/app/ui/dashboard/leagues/league-content-side-nav";
-import TableLeagueRanking from "@/app/ui/dashboard/leagues/table-league-ranking";
-import TeamList from "@/app/ui/dashboard/leagues/team-list";
 import UpcomingLeagueGames from "@/app/ui/dashboard/leagues/upcoming-league-games";
+import GamesDisplay from "@/app/ui/dashboard/leagues/games/games-display";
+import AdminGamesDisplay from "@/app/ui/dashboard/leagues/games/admin-games-display";
+import { Team } from "@/app/lib/definitions";
 
 export default async function Page({
     params,
@@ -20,6 +21,11 @@ export default async function Page({
     if (!rawLeagueData) {
         return <div>An Unexpected error has occured</div>
     }
+    const leagueTeams: Team[] = await getLeagueTeams(league_id);
+
+    const leagueAdmin = await getLeagueAdmin(league_id);
+    const isLeagueAdmin: boolean = leagueAdmin ? leagueAdmin.user_id === user.id : false;
+
     return (
         <>
           <section className="py-8 bg-gray-200 flex justify-center">
@@ -38,17 +44,11 @@ export default async function Page({
             <LeagueContentSideNav league_id={league_id}/>
 
             <div className="flex flex-col flex-1">
-              <section className="overflow-x-auto p-2">
-                <div className="bg-gray-100 w-full pb-2 rounded-md shadow-md">
-                  <TableLeagueRanking league_id={rawLeagueData.league_id} />
-                </div>
-              </section>
-              
-              <section className="overflow-x-auto p-2">
-                <div className="bg-gray-100 w-full pb-2 rounded-md shadow-md">
-                  <TeamList user={user} league_id={rawLeagueData.league_id}/>
-                </div>
-              </section>
+              {
+                isLeagueAdmin ?
+                <AdminGamesDisplay league_id={league_id} teams={leagueTeams}/> : 
+                <GamesDisplay league_id={league_id}/>
+              }
             </div>
           </div>
         </>
