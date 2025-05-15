@@ -106,3 +106,12 @@ export type GameWithTeamNames = {
     game_time: Date,
     status: string,
 };
+
+export type BracketLeagueSearchResult = {
+        name: string,
+        description: string,
+        start_date: Date,
+        end_date: Date,
+        id: string,
+        type: string,
+};
