@@ -14,7 +14,7 @@ export default async function Page() {
     const user = await getUserSession();
 
     return (
-        <main>
+        <main className='max-w-screen-xl m-auto'>
             <h1 className='text-4xl font-bold ml-2 sm:ml-16 my-8 px-2 w-fit border-b border-black'>Dashboard</h1>
             
             <BracketLeagueSearch />
