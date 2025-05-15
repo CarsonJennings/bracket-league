@@ -4,10 +4,17 @@ import { getBracketLeagueSearchResults } from "@/app/lib/data";
 import { BracketLeagueSearchResult } from "@/app/lib/definitions";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
-export default function SearchResults({search} : {search: string}) {
+export default function SearchResults() {
     const [results, setResults] = useState<BracketLeagueSearchResult[]>([]);
+    const searchParams = useSearchParams();
     
+    let search = searchParams.get('q');
+    if (!search) {
+        search = " ";
+    }
+
     useEffect(() => {
         const fetchResults = async () => {
             const newResults = await getBracketLeagueSearchResults(search);

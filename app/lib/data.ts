@@ -395,7 +395,7 @@ export async function getBracketLeagueSearchResults(name: string) {
         `;
         return rows as BracketLeagueSearchResult[];
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return [];
     }
 }
