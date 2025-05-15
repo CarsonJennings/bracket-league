@@ -1,5 +1,3 @@
-'use client'
-
 import BracketLeagueSearch from "@/app/ui/dashboard/bracket-league-search";
 import SearchResults from "@/app/ui/dashboard/search/search-results";
 import { Suspense } from "react";
