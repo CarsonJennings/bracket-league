@@ -2,7 +2,7 @@
 
 import { sql } from '@vercel/postgres';
 import { getUserSession } from '@/app/lib/sessions';
-import { CreateState, League, Bracket, User, Team, Game, GameWithTeamNames } from '@/app/lib/definitions';
+import { CreateState, League, Bracket, User, Team, Game, GameWithTeamNames, BracketLeagueSearchResult } from '@/app/lib/definitions';
 
 // Returns true if date2 is ahead of date1 by a year. With precision down to the day
 function isAheadAYear(date1: Date, date2: Date) {
@@ -368,6 +368,32 @@ export async function getLeagueGamesInRange(league_id: string, start_date: Date,
             ORDER BY games.game_time
         `;
         return rows as GameWithTeamNames[];
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}
+
+export async function getBracketLeagueSearchResults(name: string) {
+    try {
+        const { rows } = await sql`
+            SELECT name, description, start_date, end_date, 
+                CASE 
+                    WHEN league_id IS NOT NULL THEN league_id 
+                    ELSE bracket_id 
+                END AS id,
+                CASE 
+                    WHEN league_id IS NOT NULL THEN 'league' 
+                    ELSE 'bracket' 
+                END AS type
+            FROM (
+                SELECT name, description, start_date, end_date, league_id, NULL AS bracket_id FROM leagues
+                UNION ALL
+                SELECT name, description, start_date, end_date, NULL AS league_id, bracket_id FROM brackets
+            ) AS combined_entries
+            WHERE name ILIKE ${'%' + name + '%'}
+        `;
+        return rows as BracketLeagueSearchResult[];
     } catch (error) {
         console.error(error);
         return [];
